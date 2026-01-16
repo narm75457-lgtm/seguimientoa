@@ -7,9 +7,7 @@ import AttendanceTracker from './components/AttendanceTracker';
 import GradesTracker from './components/GradesTracker';
 import AIInsights from './components/AIInsights';
 import ExportTool from './components/ExportTool';
-import AutomationSettingsView from './components/AutomationSettings';
 import TeacherEvaluationView from './components/TeacherEvaluation';
-import InitialAssessment from './components/InitialAssessment';
 import RiskAnalysis from './components/RiskAnalysis';
 import FinanceManagement from './components/FinanceManagement';
 import ExamManager from './components/ExamManager';
@@ -17,14 +15,18 @@ import StudentPortal from './components/StudentPortal';
 import AcademicManagement from './components/AcademicManagement';
 import Login from './components/Login';
 import { getInitialDB } from './mockData';
-import { AppState, Student, AttendanceRecord, Grade, AutomationSettings, Teacher, TeacherEvaluation, LearningProfile, Exam, UserRole } from './types';
+import { AppState, UserRole } from './types';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [state, setState] = useState<AppState>(() => {
-    const saved = localStorage.getItem('edu_track_state_v9');
-    if (saved) return JSON.parse(saved);
+    try {
+      const saved = localStorage.getItem('edu_track_state_v9');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.error("Error loading state", e);
+    }
     return getInitialDB();
   });
 
