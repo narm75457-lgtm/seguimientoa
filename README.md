@@ -1,11 +1,32 @@
-<div align="center">
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+# 🎓 SIAE - Universidad Fray Diego
 
-  <h1>Built with AI Studio</h2>
+Sistema Inteligente de Administración Escolar listo para producción.
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+## 🚀 Despliegue Rápido (Recomendado: Vercel)
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+1. **Subir a GitHub**: Crea un repositorio y sube todos estos archivos.
+2. **Conectar a Vercel**: 
+   - Ve a [Vercel](https://vercel.com).
+   - Haz clic en "Add New" > "Project".
+   - Importa tu repositorio de GitHub.
+3. **Configurar Variable de Entorno**:
+   - En el paso "Environment Variables", añade una nueva:
+     - **Key**: `API_KEY`
+     - **Value**: (Tu API Key de Google Gemini)
+4. **Desplegar**: Haz clic en "Deploy". ¡Listo! Tu universidad ya está en la web.
 
-</div>
+## 🛠️ Desarrollo Local
+
+Si quieres trabajar en tu computadora:
+
+```bash
+# Instalar dependencias
+npm install
+
+# Correr en modo desarrollo
+npm run dev
+```
+
+## 📊 Arquitectura de Datos
+La plataforma utiliza un estado global centralizado en `App.tsx` que se sincroniza con `localStorage`. Para una base de datos masiva (más de 1000 alumnos), se recomienda integrar un Backend con **Firebase** o **Supabase** reemplazando las funciones de guardado en `App.tsx`.
