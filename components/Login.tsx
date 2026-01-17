@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { UserRole } from '../types';
-import { ShieldCheck, User, BookOpen, Settings2, GraduationCap, Mail, Lock, Eye, EyeOff, AlertCircle } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, ChevronRight, GraduationCap, Zap, ShieldCheck } from 'lucide-react';
 
 interface LoginProps {
   onSelectRole: (role: UserRole, studentId?: string) => void;
@@ -13,149 +13,163 @@ const Login: React.FC<LoginProps> = ({ onSelectRole, students }) => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
-  const [loginMode, setLoginMode] = useState<'form' | 'demo'>('form');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsLoading(true);
     setError('');
 
-    // Credenciales específicas solicitadas por el usuario
-    if (email === 'narm75457@gmail.com' && password === 'c202128456') {
-      onSelectRole('control_escolar'); // Acceso total como administrador/control escolar
-      return;
-    }
+    setTimeout(() => {
+      // Credenciales de Control Escolar
+      if (email === 'narm75457@gmail.com' && password === 'c202128456') {
+        onSelectRole('control_escolar');
+        return;
+      }
 
-    // Validación para alumnos existentes (usando su matricula como password por defecto para el demo)
-    const student = students.find(s => s.email === email);
-    if (student && password === student.id) {
-      onSelectRole('alumno', student.id);
-      return;
-    }
+      // Credenciales de Alumno
+      const student = students.find(s => s.email === email);
+      if (student && password === student.id) {
+        onSelectRole('alumno', student.id);
+        return;
+      }
 
-    setError('Las credenciales ingresadas son incorrectas. Verifique su correo y contraseña.');
+      setError('Acceso denegado. Verifique sus credenciales institucionales.');
+      setIsLoading(false);
+    }, 1200);
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] flex items-center justify-center p-6 relative overflow-hidden font-sans">
-      {/* Elementos decorativos de fondo */}
-      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-red-600/10 rounded-full -mr-64 -mt-64 blur-[120px] animate-pulse" />
-      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-red-600/5 rounded-full -ml-64 -mb-64 blur-[120px]" />
+    <div className="min-h-screen bg-[#020617] flex flex-col lg:flex-row font-sans selection:bg-red-600 selection:text-white overflow-hidden">
       
-      <div className="max-w-md w-full relative z-10">
-        <div className="text-center mb-10">
-          <div className="w-20 h-20 bg-red-600 rounded-[2rem] flex items-center justify-center mx-auto mb-6 shadow-2xl shadow-red-900/50 transform hover:rotate-12 transition-transform duration-500">
-            <GraduationCap size={40} className="text-white" />
-          </div>
-          <h1 className="text-4xl font-black text-white mb-2 tracking-tight">SIAE</h1>
-          <p className="text-red-500 font-bold text-xs uppercase tracking-[0.4em]">Universidad Fray Diego</p>
+      {/* SECCIÓN VISUAL IZQUIERDA: Minimalista Institucional */}
+      <div className="lg:w-3/5 relative min-h-[40vh] lg:min-h-screen bg-slate-950 flex items-center justify-center overflow-hidden">
+        {/* Decoración de fondo: Círculos de gradiente sutiles */}
+        <div className="absolute top-0 left-0 w-full h-full">
+           <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-red-600/10 rounded-full blur-[120px]"></div>
+           <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-slate-800/20 rounded-full blur-[120px]"></div>
         </div>
 
-        {loginMode === 'form' ? (
-          <div className="bg-white/10 backdrop-blur-2xl border border-white/10 p-10 rounded-[3rem] shadow-2xl animate-fade-in">
-            <h2 className="text-xl font-black text-white mb-8 text-center uppercase tracking-widest">Portal de Ingreso</h2>
-            
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {error && (
-                <div className="bg-red-500/10 border border-red-500/50 p-4 rounded-2xl flex items-start gap-3 animate-shake">
-                  <AlertCircle className="text-red-500 shrink-0" size={18} />
-                  <p className="text-red-200 text-xs font-medium leading-relaxed">{error}</p>
-                </div>
-              )}
+        {/* Branding "Legado y Excelencia" */}
+        <div className="relative z-20 p-8 lg:p-24 animate-fade-in w-full text-center lg:text-left">
+          <div className="flex items-center gap-5 mb-10 justify-center lg:justify-start">
+            <div className="w-16 h-16 bg-red-600 rounded-[1.4rem] flex items-center justify-center shadow-[0_0_50px_rgba(220,38,38,0.3)] border border-red-500/20 rotate-3">
+              <GraduationCap className="text-white" size={36} />
+            </div>
+            <div className="h-[2px] w-24 bg-gradient-to-r from-red-600 to-transparent hidden lg:block"></div>
+          </div>
+          
+          <h2 className="text-5xl lg:text-[8rem] font-black text-white tracking-tighter uppercase mb-6 leading-[0.85] drop-shadow-2xl">
+            LEGADO Y <br/>
+            <span className="text-red-600 italic">EXCELENCIA</span>
+          </h2>
+          
+          <div className="flex items-center gap-4 bg-white/5 backdrop-blur-md w-fit px-6 py-3 rounded-2xl border border-white/5 mx-auto lg:mx-0">
+            <div className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></div>
+            <p className="text-slate-300 font-bold text-sm lg:text-lg uppercase tracking-[0.3em]">
+              SIAE <span className="text-white">Portal Institucional</span>
+            </p>
+          </div>
 
-              <div className="space-y-2">
-                <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-1">Correo Electrónico</label>
-                <div className="relative group">
-                  <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-red-500 transition-colors" size={18} />
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="ejemplo@fraydiego.edu.mx"
-                    className="w-full pl-12 pr-4 py-4 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:bg-white/10 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all font-medium placeholder:text-slate-600"
-                  />
-                </div>
-              </div>
+          <div className="mt-12 hidden lg:block">
+            <p className="text-slate-500 text-xs font-black uppercase tracking-[0.5em] max-w-md leading-loose opacity-50">
+              SISTEMA INTEGRAL DE ADMINISTRACIÓN ESCOLAR • UNIVERSIDAD FRAY DIEGO • HGO-MAIN-NODE
+            </p>
+          </div>
+        </div>
+      </div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between items-center ml-1">
-                  <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Contraseña</label>
-                  <button type="button" className="text-[10px] font-black text-red-500 uppercase hover:underline">¿Olvidó su clave?</button>
-                </div>
-                <div className="relative group">
-                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-red-500 transition-colors" size={18} />
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full pl-12 pr-12 py-4 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:bg-white/10 focus:border-red-500/50 focus:ring-4 focus:ring-red-500/10 transition-all font-medium placeholder:text-slate-600"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 hover:text-white transition-colors"
-                  >
-                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                  </button>
-                </div>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-5 bg-red-600 text-white rounded-[2rem] font-black text-sm uppercase tracking-[0.2em] shadow-2xl shadow-red-900/50 hover:bg-red-700 hover:-translate-y-1 transition-all active:scale-95 mt-4"
-              >
-                Acceder al Sistema
-              </button>
-            </form>
-            
-            <div className="mt-8 text-center">
-              <button 
-                onClick={() => setLoginMode('demo')}
-                className="text-[10px] font-black text-slate-500 uppercase tracking-widest hover:text-red-500 transition-colors"
-              >
-                Explorar otros roles (Demo)
-              </button>
+      {/* SECCIÓN DERECHA: Formulario de Acceso */}
+      <div className="lg:w-2/5 flex flex-col items-center justify-center p-6 lg:p-20 relative bg-[#020617] border-t lg:border-t-0 lg:border-l border-white/5">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-600/5 rounded-full blur-[160px] pointer-events-none"></div>
+        
+        <div className="w-full max-w-[420px] relative z-30 animate-fade-in">
+          <div className="mb-14 text-center lg:text-left">
+            <div className="inline-flex items-center gap-3 mb-6 bg-red-600/10 px-5 py-2 rounded-full border border-red-600/20">
+               <ShieldCheck size={14} className="text-red-600" />
+               <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">Autenticación Segura v3.5</span>
+            </div>
+            <h1 className="text-4xl lg:text-6xl font-black text-white tracking-tighter uppercase mb-3">
+              SIAE <span className="text-red-600">CLOUD</span>
+            </h1>
+            <div className="flex items-center gap-2 justify-center lg:justify-start">
+               <Zap size={14} className="text-slate-600 fill-slate-600" />
+               <p className="text-[10px] font-black text-slate-500 uppercase tracking-[0.4em]">Gestión Universitaria</p>
             </div>
           </div>
-        ) : (
-          <div className="space-y-4 animate-fade-in">
-             <div className="bg-white/5 border border-white/10 p-6 rounded-[2rem] text-center mb-6">
-                <p className="text-slate-400 text-xs font-medium">Seleccione un perfil para demostración rápida de funcionalidades.</p>
-             </div>
-             <div className="grid grid-cols-2 gap-4">
-                {[
-                  { id: 'control_escolar', label: 'Admin', icon: Settings2 },
-                  { id: 'maestro', label: 'Docente', icon: BookOpen },
-                  { id: 'coordinador', label: 'Coord.', icon: ShieldCheck },
-                ].map((role) => (
-                  <button
-                    key={role.id}
-                    onClick={() => onSelectRole(role.id as UserRole)}
-                    className="bg-white/5 border border-white/10 p-6 rounded-3xl text-center hover:bg-white hover:text-slate-900 transition-all group flex flex-col items-center"
-                  >
-                    <role.icon className="text-slate-500 group-hover:text-red-600 mb-2" size={24} />
-                    <span className="font-black text-[10px] uppercase tracking-widest">{role.label}</span>
-                  </button>
-                ))}
-                <button
-                  onClick={() => setLoginMode('form')}
-                  className="bg-red-600/10 border border-red-600/20 p-6 rounded-3xl text-center hover:bg-red-600 text-white transition-all group flex flex-col items-center col-span-1"
-                >
-                  <Mail className="mb-2" size={24} />
-                  <span className="font-black text-[10px] uppercase tracking-widest">Regresar</span>
-                </button>
-             </div>
-          </div>
-        )}
 
-        <div className="mt-12 text-center">
-          <p className="text-slate-600 text-[9px] font-bold uppercase tracking-[0.4em] mb-4">Seguridad Institucional RVOE • 2024</p>
-          <div className="flex justify-center gap-6 text-[10px] font-black text-slate-500 uppercase tracking-widest">
-            <a href="#" className="hover:text-red-500 transition-colors">Aviso de Privacidad</a>
-            <span className="opacity-20">|</span>
-            <a href="#" className="hover:text-red-500 transition-colors">Soporte Técnico</a>
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-b from-red-600/20 to-transparent rounded-[3.5rem] blur-xl opacity-50 group-hover:opacity-100 transition duration-700"></div>
+            
+            <div className="relative bg-slate-900/40 backdrop-blur-3xl p-10 lg:p-14 rounded-[3.4rem] border border-white/5 shadow-2xl">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                {error && (
+                  <div className="bg-red-600/10 border border-red-600/20 p-5 rounded-2xl flex items-center gap-3 animate-shake">
+                    <AlertCircle className="text-red-600 shrink-0" size={20} />
+                    <p className="text-red-100 text-[11px] font-bold leading-tight uppercase tracking-wider">{error}</p>
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Matrícula o Correo</label>
+                  <div className="relative group/input">
+                    <Mail className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-700 group-focus-within/input:text-red-600 transition-colors" size={20} />
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="usuario@fraydiego.edu.mx"
+                      className="w-full pl-16 pr-6 py-5 bg-white/[0.03] border border-white/10 rounded-[2.2rem] text-white outline-none focus:bg-white/[0.05] focus:border-red-600/40 transition-all font-medium placeholder:text-slate-800"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-slate-500 uppercase tracking-[0.3em] ml-2">Contraseña</label>
+                  <div className="relative group/input">
+                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-700 group-focus-within/input:text-red-600 transition-colors" size={20} />
+                    <input
+                      type={showPassword ? 'text' : 'password'}
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="••••••••••••"
+                      className="w-full pl-16 pr-16 py-5 bg-white/[0.03] border border-white/10 rounded-[2.2rem] text-white outline-none focus:bg-white/[0.05] focus:border-red-600/40 transition-all font-medium placeholder:text-slate-800"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-6 top-1/2 -translate-y-1/2 text-slate-600 hover:text-white transition-colors"
+                    >
+                      {showPassword ? <EyeOff size={22} /> : <Eye size={22} />}
+                    </button>
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isLoading}
+                  className="w-full py-6 bg-red-600 text-white rounded-[2.2rem] font-black text-sm uppercase tracking-[0.5em] shadow-[0_20px_50px_-10px_rgba(220,38,38,0.5)] hover:bg-red-700 hover:-translate-y-1 transition-all active:scale-95 mt-6 disabled:opacity-50 flex items-center justify-center gap-3 group"
+                >
+                  {isLoading ? (
+                    <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  ) : (
+                    <>
+                      INGRESAR AL SIAE
+                      <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                    </>
+                  )}
+                </button>
+              </form>
+
+              <div className="mt-14 pt-10 border-t border-white/5 text-center">
+                <p className="text-[10px] text-slate-700 font-bold uppercase tracking-[0.4em] leading-loose">
+                  UFD INSTITUCIONAL<br/>
+                  CONTROL Y GESTIÓN ACADÉMICA
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

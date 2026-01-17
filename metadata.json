@@ -1,5 +1,5 @@
 {
-  "name": "EduTrack Pro",
+  "name": "seguimiento academico",
   "description": "A comprehensive educational management platform for teachers to track student attendance, grades, and performance insights with AI-powered analysis and data export capabilities.",
   "requestFramePermissions": [
     "camera",
