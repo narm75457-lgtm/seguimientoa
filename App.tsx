@@ -17,7 +17,7 @@ import Login from './components/Login';
 import { getInitialDB } from './mockData';
 import { AppState, UserRole } from './types';
 import { supabase } from './lib/supabase';
-import { CloudSync, Loader2, Wifi, WifiOff, ShieldCheck, Database } from 'lucide-react';
+import { RefreshCw, Loader2, Wifi, WifiOff, ShieldCheck, Database, Cloud } from 'lucide-react';
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -27,7 +27,6 @@ const App: React.FC = () => {
   const [cloudStatus, setCloudStatus] = useState<'online' | 'offline'>('online');
   const [state, setState] = useState<AppState>(getInitialDB());
 
-  // Sincronización con Supabase
   const syncToCloud = async (newState: AppState) => {
     setIsSyncing(true);
     try {
@@ -61,7 +60,6 @@ const App: React.FC = () => {
           setState(data.data);
           setCloudStatus('online');
         } else {
-          // Si la tabla está vacía, subir el mock inicial
           const initial = getInitialDB();
           setState(initial);
           await syncToCloud(initial);
@@ -72,7 +70,7 @@ const App: React.FC = () => {
         const local = localStorage.getItem('siae_backup');
         if (local) setState(JSON.parse(local));
       } finally {
-        setTimeout(() => setIsLoading(false), 1500); // Delay suave para estética
+        setTimeout(() => setIsLoading(false), 1500);
       }
     };
     initData();
@@ -134,7 +132,6 @@ const App: React.FC = () => {
 
   return (
     <Layout activeTab={activeTab} setActiveTab={setActiveTab} userRole={state.currentUserRole} onLogout={handleLogout}>
-      {/* Indicador de Status Cloud Premium */}
       <div className="fixed top-8 right-44 z-50 flex items-center gap-4">
         <div className={`flex items-center gap-2 px-4 py-2 rounded-2xl border transition-all duration-500 bg-white shadow-sm ${cloudStatus === 'online' ? 'border-emerald-100 text-emerald-600' : 'border-amber-100 text-amber-600'}`}>
           {cloudStatus === 'online' ? <Wifi size={14} className="animate-pulse" /> : <WifiOff size={14} />}
@@ -145,7 +142,7 @@ const App: React.FC = () => {
         
         {isSyncing && (
           <div className="flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-2xl shadow-lg shadow-red-200 animate-fade-in">
-            <CloudSync size={14} className="animate-spin" />
+            <RefreshCw size={14} className="animate-spin" />
             <span className="text-[10px] font-black uppercase tracking-widest">Sincronizando</span>
           </div>
         )}
