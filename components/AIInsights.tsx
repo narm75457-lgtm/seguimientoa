@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { AppState } from '../types';
 import { getClassInsights } from '../services/geminiService';
 import { Sparkles, Loader2, BrainCircuit, Send, Info } from 'lucide-react';
+import { marked } from 'marked';
 
 interface AIInsightsProps {
   state: AppState;
@@ -45,7 +46,7 @@ const AIInsights: React.FC<AIInsightsProps> = ({ state }) => {
               <input
                 type="text"
                 placeholder="Pregunta sobre inscripciones, planes de estudio o tus grupos..."
-                className="w-full pl-6 pr-14 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-red-600 focus:bg-white transition-all font-medium shadow-inner"
+                className="w-full pl-6 pr-14 py-5 bg-slate-50 border-2 border-slate-100 rounded-2xl outline-none focus:border-red-600 focus:bg-white transition-colors font-medium shadow-inner text-slate-900"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && query && handleGenerate(query)}
@@ -101,10 +102,10 @@ const AIInsights: React.FC<AIInsightsProps> = ({ state }) => {
       {insights && !loading && (
         <div className="bg-white p-12 rounded-[3rem] border border-slate-100 shadow-2xl animate-fade-in relative overflow-hidden">
            <div className="absolute top-0 left-0 w-2 h-full bg-red-600" />
-           <div className="prose prose-slate max-w-none">
-             <div className="whitespace-pre-wrap font-medium leading-relaxed text-slate-700 text-lg">
-                {insights}
-             </div>
+           <div className="markdown-content text-slate-700">
+             <div 
+               dangerouslySetInnerHTML={{ __html: marked.parse(insights) }} 
+             />
            </div>
            
            <div className="mt-12 pt-10 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6">

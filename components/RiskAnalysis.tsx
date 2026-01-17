@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { AppState, Student } from '../types';
 import { analyzeDropoutRisk } from '../services/geminiService';
 import { AlertTriangle, Brain, Loader2, MessageCircle, TrendingDown, Clock, Heart, ShieldAlert } from 'lucide-react';
+import { marked } from 'marked';
 
 interface RiskAnalysisProps {
   state: AppState;
@@ -139,8 +140,10 @@ const RiskAnalysis: React.FC<RiskAnalysisProps> = ({ state }) => {
                 </div>
               ) : (
                 <div className="animate-fade-in space-y-6">
-                  <div className="whitespace-pre-wrap text-slate-700 font-medium leading-relaxed">
-                    {analysis}
+                  <div className="markdown-content text-slate-700">
+                    <div 
+                      dangerouslySetInnerHTML={{ __html: marked.parse(analysis || '') }} 
+                    />
                   </div>
                   
                   <div className="pt-6 border-t border-slate-200">

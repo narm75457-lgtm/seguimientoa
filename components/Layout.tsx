@@ -18,7 +18,8 @@ import {
   Search,
   ChevronRight,
   ShieldCheck,
-  Server
+  Server,
+  Briefcase
 } from 'lucide-react';
 import { UserRole } from '../types';
 
@@ -37,6 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
     { id: 'student-portal', label: 'Expediente Alumno', icon: UserIcon, roles: ['alumno'] },
     { id: 'academic-mgmt', label: 'Oferta Académica', icon: BookMarked, roles: ['control_escolar', 'coordinador'] },
     { id: 'students', label: 'Censo Estudiantil', icon: Users, roles: ['control_escolar', 'coordinador'] },
+    { id: 'staff', label: 'Gestión de Plantilla', icon: Briefcase, roles: ['control_escolar'] },
     { id: 'attendance', label: 'Asistencia', icon: CalendarCheck, roles: ['control_escolar', 'maestro'] },
     { id: 'exams', label: 'Evaluaciones Digitales', icon: FileQuestion, roles: ['control_escolar', 'maestro', 'alumno'] },
     { id: 'grades', label: 'Calificaciones RVOE', icon: GraduationCap, roles: ['control_escolar', 'maestro'] },
@@ -60,7 +62,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
     <div className="flex min-h-screen bg-[#f1f5f9] font-sans selection:bg-red-600 selection:text-white">
       {/* Sidebar Corporativo Premium */}
       <aside className="w-80 bg-[#0f172a] text-white flex flex-col fixed h-full z-40 border-r-[8px] border-red-700 shadow-2xl">
-        {/* Branding Section */}
         <div className="p-12 pb-6">
           <div className="flex items-center gap-4 mb-4">
             <div className="w-12 h-12 bg-red-600 rounded-2xl flex items-center justify-center shadow-lg shadow-red-900/40">
@@ -76,7 +77,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
           <div className="h-px w-full bg-gradient-to-r from-white/10 to-transparent my-6" />
         </div>
 
-        {/* Navigation Section */}
         <nav className="flex-1 px-6 space-y-1.5 overflow-y-auto custom-scrollbar pb-10">
           <p className="px-6 text-[9px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4">Menú Principal</p>
           {navItems.map((item) => (
@@ -98,7 +98,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
           ))}
         </nav>
         
-        {/* Footer Sidebar / Session Card */}
         <div className="p-8">
           <div className="bg-white/5 border border-white/10 rounded-[2rem] p-6 shadow-xl">
              <div className="flex items-center gap-4 mb-6">
@@ -121,9 +120,7 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
         </div>
       </aside>
 
-      {/* Main Content Area */}
       <main className="ml-80 flex-1 p-14 bg-[#f8fafc]">
-        {/* Modern Professional Header */}
         <header className="mb-14 flex justify-between items-center bg-white p-8 rounded-[3rem] border border-slate-100 shadow-xl shadow-slate-200/50 sticky top-8 z-30 border-t-[6px] border-red-700">
           <div className="flex items-center gap-8">
              <div className="relative group">
@@ -165,7 +162,6 @@ const Layout: React.FC<LayoutProps> = ({ children, activeTab, setActiveTab, user
           {children}
         </div>
 
-        {/* Global Institutional Footer */}
         <footer className="mt-20 pt-10 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6 pb-12">
            <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-slate-900 text-red-600 rounded-xl flex items-center justify-center font-black text-xs">UFD</div>

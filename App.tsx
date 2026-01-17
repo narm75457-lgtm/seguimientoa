@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Layout from './components/Layout';
 import Dashboard from './components/Dashboard';
 import StudentList from './components/StudentList';
+import StaffManagement from './components/StaffManagement';
 import AttendanceTracker from './components/AttendanceTracker';
 import GradesTracker from './components/GradesTracker';
 import AIInsights from './components/AIInsights';
@@ -13,6 +14,7 @@ import FinanceManagement from './components/FinanceManagement';
 import ExamManager from './components/ExamManager';
 import StudentPortal from './components/StudentPortal';
 import AcademicManagement from './components/AcademicManagement';
+import AnnouncementsView from './components/Announcements';
 import Login from './components/Login';
 import { getInitialDB } from './mockData';
 import { AppState, UserRole } from './types';
@@ -109,15 +111,17 @@ const App: React.FC = () => {
   }
 
   if (!isLoggedIn) {
-    return <Login onSelectRole={handleLogin} students={state.students} />;
+    return <Login onSelectRole={handleLogin} students={state.students} teachers={state.teachers} />;
   }
 
   const renderContent = () => {
     switch (activeTab) {
       case 'dashboard': return <Dashboard state={state} />;
+      case 'announcements': return <AnnouncementsView announcements={state.announcements} userRole={state.currentUserRole} onAddAnnouncement={(a) => updateState(p => ({...p, announcements: [...p.announcements, a]}))} onRemoveAnnouncement={(id) => updateState(p => ({...p, announcements: p.announcements.filter(a => a.id !== id)}))} />;
       case 'student-portal': return <StudentPortal studentId={state.currentUserId || ''} state={state} />;
       case 'academic-mgmt': return <AcademicManagement state={state} />;
       case 'students': return <StudentList students={state.students} onAddStudent={(s) => updateState(p => ({...p, students: [...p.students, s]}))} onRemoveStudent={(id) => updateState(p => ({...p, students: p.students.filter(s => s.id !== id)}))} />;
+      case 'staff': return <StaffManagement teachers={state.teachers} onAddTeacher={(t) => updateState(p => ({...p, teachers: [...p.teachers, t]}))} onRemoveTeacher={(id) => updateState(p => ({...p, teachers: p.teachers.filter(teacher => teacher.id !== id)}))} />;
       case 'attendance': return <AttendanceTracker students={state.students} records={state.attendance} automation={state.automation} onSaveAttendance={(r) => updateState(p => ({...p, attendance: [...p.attendance, ...r]}))} />;
       case 'exams': return <ExamManager exams={state.exams || []} onAddExam={(e) => updateState(p => ({...p, exams: [e, ...p.exams]}))} onRemoveExam={(id) => updateState(p => ({...p, exams: p.exams.filter(e => e.id !== id)}))} />;
       case 'grades': return <GradesTracker students={state.students} grades={state.grades} onAddGrade={(g) => updateState(p => ({...p, grades: [g, ...p.grades]}))} onRemoveGrade={(id) => updateState(p => ({...p, grades: p.grades.filter(g => g.id !== id)}))} />;

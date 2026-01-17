@@ -49,8 +49,10 @@ export const getInitialDB = (): AppState => {
     currentUserRole: 'control_escolar',
     students,
     teachers: [
-      { id: 't1', name: 'Dr. Roberto Sánchez', subject: 'Derecho Penal I', department: 'Derecho' },
-      { id: 't2', name: 'Dra. Elena Martínez', subject: 'Psicología Infantil', department: 'Psicología' }
+      // Fix: Added missing 'email' property to Teacher mock data
+      { id: 't1', name: 'Dr. Roberto Sánchez', email: 'r.sanchez@fraydiego.edu.mx', subject: 'Derecho Penal I', department: 'Derecho' },
+      // Fix: Added missing 'email' property to Teacher mock data
+      { id: 't2', name: 'Dra. Elena Martínez', email: 'e.martinez@fraydiego.edu.mx', subject: 'Psicología Infantil', department: 'Psicología' }
     ],
     subjects,
     schedules: [

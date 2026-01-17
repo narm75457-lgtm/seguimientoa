@@ -11,6 +11,17 @@ interface DashboardProps {
   state: AppState;
 }
 
+const ALL_CAREERS = [
+  'Derecho',
+  'Criminología y Criminalística',
+  'Psicología',
+  'Administración y Estrategias de Negocios',
+  'Ingeniería en Logística Internacional',
+  'Ingeniería Industrial',
+  'Pedagogía (Ciencias de la Educación)',
+  'Ingeniería en Software y Sistemas'
+];
+
 const Dashboard: React.FC<DashboardProps> = ({ state }) => {
   const totalStudents = state.students.length;
   const avgGrade = state.grades.length > 0 
@@ -23,12 +34,17 @@ const Dashboard: React.FC<DashboardProps> = ({ state }) => {
 
   const deudores = state.students.filter(s => s.financialStatus?.hasDebt).length;
 
-  const careerData = state.students.reduce((acc: any[], curr) => {
-    const existing = acc.find(item => item.name === curr.career);
-    if (existing) existing.value += 1;
-    else acc.push({ name: curr.career, value: 1 });
-    return acc;
-  }, []);
+  // Mapear todas las carreras para asegurar que aparezcan todas en el gráfico, incluso con valor 0
+  const careerData = ALL_CAREERS.map(careerName => {
+    const count = state.students.filter(s => s.career === careerName).length;
+    // Acortar nombres muy largos para el eje X del gráfico
+    const displayName = careerName.length > 20 ? careerName.substring(0, 18) + '...' : careerName;
+    return {
+      name: displayName,
+      fullName: careerName,
+      value: count
+    };
+  });
 
   return (
     <div className="space-y-10 animate-fade-in">
@@ -64,7 +80,7 @@ const Dashboard: React.FC<DashboardProps> = ({ state }) => {
         </div>
       </div>
 
-      {/* KPI Grid with Professional Styling */}
+      {/* KPI Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
           { label: 'Censo Total', value: totalStudents, icon: Users, color: 'bg-red-600', shadow: 'shadow-red-900/10', textColor: 'text-red-600' },
@@ -85,7 +101,6 @@ const Dashboard: React.FC<DashboardProps> = ({ state }) => {
 
       {/* Analytics Section */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
-        {/* Population Area Chart */}
         <div className="lg:col-span-2 bg-white p-12 rounded-[3.5rem] shadow-2xl shadow-slate-200/50 border border-slate-100">
           <div className="flex justify-between items-center mb-12">
             <div>
@@ -108,9 +123,18 @@ const Dashboard: React.FC<DashboardProps> = ({ state }) => {
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10, fontWeight: '900'}} />
+                <XAxis 
+                  dataKey="name" 
+                  axisLine={false} 
+                  tickLine={false} 
+                  tick={{fill: '#94a3b8', fontSize: 9, fontWeight: '700'}} 
+                  interval={0}
+                />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#94a3b8', fontSize: 10}} />
-                <Tooltip contentStyle={{ borderRadius: '2rem', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '20px' }} />
+                <Tooltip 
+                  contentStyle={{ borderRadius: '2rem', border: 'none', boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.15)', padding: '20px' }}
+                  formatter={(value: number, name: string, props: any) => [value, props.payload.fullName]}
+                />
                 <Area type="monotone" dataKey="value" stroke="#dc2626" strokeWidth={5} fillOpacity={1} fill="url(#chartGradient)" />
               </AreaChart>
             </ResponsiveContainer>

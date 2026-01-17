@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIAE - Universidad Fray Diego</title>
     <!-- Motor de Estilos Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
@@ -16,12 +16,28 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 10px; }
         
-        /* Efectos de Glassmorphism */
-        .glass {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        /* FIX DEFINITIVO DE VISIBILIDAD: Fuerza color oscuro en todos los campos de entrada */
+        input, select, textarea, option {
+            color: #0f172a !important; 
+            background-color: #ffffff !important;
+            opacity: 1 !important;
+            -webkit-text-fill-color: #0f172a !important;
         }
+
+        input::placeholder {
+            color: #94a3b8 !important;
+            -webkit-text-fill-color: #94a3b8 !important;
+        }
+
+        /* Estilos para el contenido Markdown renderizado */
+        .markdown-content h1 { font-weight: 900; font-size: 1.5rem; margin-bottom: 1rem; color: #0f172a; }
+        .markdown-content h2 { font-weight: 900; font-size: 1.25rem; margin-top: 1.5rem; margin-bottom: 0.75rem; color: #dc2626; }
+        .markdown-content h3 { font-weight: 800; font-size: 1.1rem; margin-top: 1.25rem; margin-bottom: 0.5rem; color: #1e293b; }
+        .markdown-content p { margin-bottom: 1rem; line-height: 1.6; }
+        .markdown-content ul { list-style-type: disc; padding-left: 1.5rem; margin-bottom: 1rem; }
+        .markdown-content li { margin-bottom: 0.5rem; }
+        .markdown-content strong { font-weight: 800; color: #0f172a; }
+        .markdown-content hr { border: 0; border-top: 1px solid #e2e8f0; margin: 1.5rem 0; }
     </style>
 <script type="importmap">
 {
@@ -34,7 +50,8 @@
     "recharts": "https://esm.sh/recharts@^3.6.0",
     "vite": "https://esm.sh/vite@^7.3.1",
     "@vitejs/plugin-react": "https://esm.sh/@vitejs/plugin-react@^5.1.2",
-    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.90.1"
+    "@supabase/supabase-js": "https://esm.sh/@supabase/supabase-js@^2.90.1",
+    "marked": "https://esm.sh/marked@^12.0.0"
   }
 }
 </script>

@@ -62,6 +62,8 @@ export interface Announcement {
   category: 'Académico' | 'Tesorería' | 'Evento' | 'Urgente';
   targetRoles: UserRole[];
   date: string;
+  pdfData?: string;
+  pdfName?: string;
 }
 
 export interface ExamQuestion {
@@ -84,6 +86,7 @@ export interface Exam {
 export interface Teacher {
   id: string;
   name: string;
+  email: string;
   subject: string;
   department: string;
 }
